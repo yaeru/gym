@@ -1,0 +1,85 @@
+.gym-form-field {
+	padding: 5px 20px 5px 0!important;
+	display: flex;
+    align-items: center;
+}
+/*.gym-form-field label, .form-field legend, .rwmb-label {
+    width: 150px !important;
+}
+*/
+.gym-form-field .gym-input {
+	width: 50% !important;
+}
+
+/* Styles for 'normal' meta boxes
+-------------------------------------------------------------- */
+
+/* Clearfix for field */
+.rwmb-field:after {
+	content: " ";
+	display: table;
+	clear: both;
+}
+.rwmb-field:not(:last-of-type) {
+	margin: 0 0 12px;
+}
+.rwmb-label,
+.rwmb-input {
+	vertical-align: top;
+	float: left;
+	box-sizing: border-box;
+}
+.rwmb-label {
+	width: 25%;
+}
+.rwmb-label > label {
+	font-weight: 600;
+}
+.rwmb-required {
+	color: #dc3232;
+	font-weight: bold;
+	margin-left: 3px;
+}
+.rwmb-input input,
+.rwmb-input select {
+	max-width: 99%;
+}
+
+/* 75% if field has label, 100% if no label */
+.rwmb-input {
+	width: 100%;
+}
+.rwmb-label ~ .rwmb-input {
+	width: 75%;
+}
+.rwmb-input h4 {
+	margin: 0;
+}
+.rwmb-textarea {
+	resize: vertical;
+}
+.sr-only {
+	display: none;
+}
+
+/* =Styles for 'heading' field
+-------------------------------------------------------------- */
+
+.rwmb-heading-wrapper h4 {
+	display: block;
+	font-size: .75rem;
+	line-height: 1.4;
+	border-bottom: 1px solid rgb(230, 230, 230);
+	text-transform: uppercase;
+	padding: .75rem 0 .375rem;
+	margin: 0 0 6px;
+}
+
+.rwmb-media-list:not(:empty) {
+    display: block;
+    margin: -8px 0 0 -8px;
+    overflow: hidden;
+}
+.rwmb-image-item.thumbnail {
+    width: 150px;
+}
