@@ -14,6 +14,11 @@ include plugin_dir_path(__FILE__) . '/template-functions.php';
 include plugin_dir_path(__FILE__) . '/shortcodes.php';
 
 /**
+ * Load the Widgets
+ */
+include plugin_dir_path(__FILE__) . '/widgets.php';
+
+/**
  * Add the css
  */
 // Update CSS public
@@ -64,4 +69,3 @@ function template_chooser($template)
   return $template;   
 }
 add_filter('template_include', 'template_chooser'); 
-

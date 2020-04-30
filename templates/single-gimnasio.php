@@ -13,19 +13,19 @@ get_header();
 ?>
 
 <main id="site-content" role="main">
-	<div class="container">
+	
 	<?php
 
 	if ( have_posts() ) {
 
 		while ( have_posts() ) {
 			the_post();
+			
 			include 'template-parts/content.php';
 		}
 	}
 
 	?>
-	</div>
 
 </main><!-- #site-content -->
 

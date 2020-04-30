@@ -48,7 +48,7 @@ function gym_register_custom_post_type() {
             'editor',
             'thumbnail',
             'excerpt',
-            'custom-fields',
+            'page-attributes',
         ),
         'rewrite' => true,
     );
@@ -143,16 +143,16 @@ add_action( 'init', 'create_gym_taxonomies', 0 );
  * @link https://developer.wordpress.org/reference/functions/add_meta_box/
  */
 function _gym_create_metabox() {
-        // Can only be used on a single post type (ie. page or post or a custom post type).
-        // Must be repeated for each post type you want the metabox to appear on.
+    // Can only be used on a single post type (ie. page or post or a custom post type).
+    // Must be repeated for each post type you want the metabox to appear on.
     add_meta_box(
-            '_gym_metabox', // Metabox ID
-            'Detalles', // Title to display
-            '_gym_render_metabox', // Function to call that contains the metabox content
-            'gimnasio', // Post type to display metabox on
-            'normal', // Where to put it (normal = main colum, side = sidebar, etc.)
-            'default' // Priority relative to other metaboxes
-        );
+        '_gym_metabox', // Metabox ID
+        'Detalles', // Title to display
+        '_gym_render_metabox', // Function to call that contains the metabox content
+        'gimnasio', // Post type to display metabox on
+        'normal', // Where to put it (normal = main colum, side = sidebar, etc.)
+        'default' // Priority relative to other metaboxes
+    );
 }
 add_action( 'add_meta_boxes', '_gym_create_metabox' );
 
@@ -166,13 +166,12 @@ add_action( 'add_meta_boxes', '_gym_create_metabox' );
  */
 function _gym_metabox_defaults() {
     return array(
-        'item_1' => '', /* Name */
-        'item_2' => '', /* Logo */
-        'item_3' => '', /* Phone */
-
-        'item_4' => '', /* Facebook */
-        'item_5' => '', /* Instagram */
-        'item_6' => '', /* Twitter */
+        'item_name' => '', /* Name */
+        'item_logo' => '', /* Logo */
+        'item_phone' => '', /* Phone */
+        'item_facebook' => '', /* Facebook */
+        'item_instagram' => '', /* Instagram */
+        'item_twitter' => '', /* Twitter */
     );
 }
 
@@ -185,7 +184,6 @@ function _gym_render_metabox() {
     // Variables
     global $post; // Get the current post data
     $saved = get_post_meta( $post->ID, '_gym', true ); // Get the saved values
-    //$saved = get_post_meta( $post->ID, '_gym_id', true );
     $defaults = _gym_metabox_defaults(); // Get the default values
     $details = wp_parse_args( $saved, $defaults ); // Merge the two in case any fields don't exist in the saved data
 
@@ -196,10 +194,10 @@ function _gym_render_metabox() {
         <!-- Name -->
         <div class="rwmb-field rwmb-url-wrapper">
             <div class="rwmb-label">
-                <label for="_gym_custom_metabox_item_1">
+                <label for="_gym_custom_metabox_item_address">
                     <?php
                                 // This runs the text through a translation and echoes it (for internationalization)
-                    _e( 'Nombre', '_gym' );
+                    _e( 'Dirección', '_gym' );
 
                     ?>
                 </label>
@@ -214,7 +212,7 @@ function _gym_render_metabox() {
             ?>
             <div class="rwmb-input">
                 <input
-                type="text" name="_gym_custom_metabox[item_1]" id="_gym_custom_metabox_item_1" value="<?php echo esc_attr( $details['item_1'] ); ?>">
+                type="text" name="_gym_custom_metabox[item_address]" id="_gym_custom_metabox_item_address" value="<?php echo esc_attr( $details['item_address'] ); ?>">
             </div>
         </div>
 
@@ -223,7 +221,7 @@ function _gym_render_metabox() {
         <div class="rwmb-field rwmb-url-wrapper">
             <div class="rwmb-label">
                 <!--<label for="_gym"><?php _e( 'Field Label', 'events' )?></label><br>-->
-                <label for="_gym_custom_metabox_item_2">
+                <label for="_gym_custom_metabox_item_logo">
                     <?php
                                 // This runs the text through a translation and echoes it (for internationalization)
                     _e( 'Logo', '_gym' );
@@ -234,7 +232,7 @@ function _gym_render_metabox() {
 
             <div class="rwmb-input">
                 <div class="rwmb-media-view">
-                    
+
                     <br>
 
                     <?php 
@@ -244,15 +242,15 @@ function _gym_render_metabox() {
                      * We'll use this value to dynamically inject the file URL of our uploaded media asset into your field once successful (in the myplugin-media.js file)
                      */ 
                     ?>
-                    <button type="button" class="button" id="events_video_upload_btn" data-media-uploader-target="#_gym_custom_metabox_item_2"><?php _e( 'Upload Media', 'gym' )?></button>
+                    <button type="button" class="button" id="events_video_upload_btn" data-media-uploader-target="#_gym_custom_metabox_item_logo"><?php _e( 'Upload Media', 'gym' )?></button>
 
                     <ul class="rwmb-media-list ui-sortable">
                         <li class="rwmb-image-item attachment thumbnail">
-                            <input type="url" class="sr-only" name="_gym_custom_metabox[item_2]" id="_gym_custom_metabox_item_2" value="<?php echo esc_attr( $details['item_2'] ); ?>">
+                            <input type="url" class="sr-only" name="_gym_custom_metabox[item_logo]" id="_gym_custom_metabox_item_logo" value="<?php echo esc_attr( $details['item_logo'] ); ?>">
                             <div class="attachment-preview">
                                 <div class="thumbnail">
                                     <div class="centered">
-                                        <img src="<?php echo esc_attr( $details['item_2'] ); ?>" class="item-logo">
+                                        <img src="<?php echo esc_attr( $details['item_logo'] ); ?>" class="item-logo">
                                     </div>
                                 </div>
                             </div>
@@ -266,12 +264,12 @@ function _gym_render_metabox() {
         <!-- Phone -->
         <div class="rwmb-field rwmb-url-wrapper">
             <div class="rwmb-label">
-                <label for="_gym_custom_metabox_item_3">
+                <label for="_gym_custom_metabox_item_phone">
                     <?php _e( 'Teléfono', '_gym' ); ?>
                 </label>
             </div>
             <div class="rwmb-input">
-                <input type="number" name="_gym_custom_metabox[item_3]" id="_gym_custom_metabox_item_3" value="<?php echo esc_attr( $details['item_3'] ); ?>">
+                <input type="number" name="_gym_custom_metabox[item_phone]" id="_gym_custom_metabox_item_phone" value="<?php echo esc_attr( $details['item_phone'] ); ?>">
             </div>
         </div>
 
@@ -288,31 +286,31 @@ function _gym_render_metabox() {
                 </label>
             </div>
             <div class="rwmb-input">
-                <input type="url" name="_gym_custom_metabox[item_4]" id="_gym_custom_metabox_item_4" value="<?php echo esc_url( $details['item_4'] ); ?>" placeholder="https://facebook.com">
+                <input type="url" name="_gym_custom_metabox[item_facebook]" id="_gym_custom_metabox_item_facebook" value="<?php echo esc_url( $details['item_facebook'] ); ?>" placeholder="https://facebook.com">
             </div>
         </div>
 
         <!-- Instagram -->
         <div class="rwmb-field rwmb-url-wrapper">
             <div class="rwmb-label">
-                <label for="_gym_custom_metabox_item_5">
+                <label for="_gym_custom_metabox_item_instagram">
                     <?php _e( 'Instagram', '_gym' ); ?>
                 </label>
             </div>
             <div class="rwmb-input">
-                <input type="url" name="_gym_custom_metabox[item_5]" id="_gym_custom_metabox_item_5" value="<?php echo esc_url( $details['item_5'] ); ?>">
+                <input type="url" name="_gym_custom_metabox[item_instagram]" id="_gym_custom_metabox_item_instagram" value="<?php echo esc_url( $details['item_instagram'] ); ?>">
             </div>
         </div>
 
         <!-- Twitter -->
         <div class="rwmb-field rwmb-url-wrapper">
             <div class="rwmb-label">
-                <label for="_gym_custom_metabox_item_6">
+                <label for="_gym_custom_metabox_item_twitter">
                     <?php _e( 'Twitter', '_gym' ); ?>
                 </label>
             </div>
             <div class="rwmb-input">
-                <input type="url" name="_gym_custom_metabox[item_6]" id="_gym_custom_metabox_item_6" value="<?php echo esc_url( $details['item_6'] ); ?>">
+                <input type="url" name="_gym_custom_metabox[item_twitter]" id="_gym_custom_metabox_item_twitter" value="<?php echo esc_url( $details['item_twitter'] ); ?>">
             </div>
         </div>
 
@@ -320,10 +318,10 @@ function _gym_render_metabox() {
 
     <?php
 
-        // Security field
-        // This validates that submission came from the
-        // actual dashboard and not the front end or
-        // a remote server.
+    // Security field
+    // This validates that submission came from the
+    // actual dashboard and not the front end or
+    // a remote server.
     wp_nonce_field( '_gym_form_metabox_nonce', '_gym_form_metabox_process' );
 
 }
@@ -334,10 +332,10 @@ function _gym_render_metabox() {
 //
 
 /**
-     * Save the metabox
-     * @param  Number $post_id The post ID
-     * @param  Array  $post    The post data
-     */
+ * Save the metabox
+ * @param  Number $post_id The post ID
+ * @param  Array  $post    The post data
+ */
 function _gym_save_metabox( $post_id, $post ) {
 
     // Verify that our security field exists. If not, bail.
@@ -395,24 +393,24 @@ add_action( 'save_post', '_gym_save_metabox', 1, 2 );
  */
 function _gym_save_revisions( $post_id ) {
 
-        // Check if it's a revision
+    // Check if it's a revision
     $parent_id = wp_is_post_revision( $post_id );
 
-        // If is revision
+    // If is revision
     if ( $parent_id ) {
 
-            // Get the saved data
+        // Get the saved data
         $parent = get_post( $parent_id );
         $details = get_post_meta( $parent->ID, '_gym', true );
 
-            // If data exists and is an array, add to revision
+        // If data exists and is an array, add to revision
         if ( !empty( $details ) && is_array( $details ) ) {
-                // Get the defaults
+            // Get the defaults
             $defaults = _gym_metabox_defaults();
 
-                // For each default item
+            // For each default item
             foreach ( $defaults as $key => $value ) {
-                    // If there's a saved value for the field, save it to the version history
+                // If there's a saved value for the field, save it to the version history
                 if ( array_key_exists( $key, $details ) ) {
                     add_metadata( 'post', $post_id, '_gym_' . $key, $details[$key] );
                 }
@@ -467,10 +465,10 @@ add_action( 'wp_restore_post_revision', '_gym_restore_revisions', 10, 2 );
  */
 function _gym_get_revisions_fields( $fields ) {
 
-        // Get our default values
+    // Get our default values
     $defaults = _gym_metabox_defaults();
 
-        // For each field, use the key as the title
+    // For each field, use the key as the title
     foreach ( $defaults as $key => $value ) {
         $fields['_gym_' . $key] = ucfirst( $key );
     }
@@ -526,9 +524,6 @@ add_action( 'admin_enqueue_scripts', 'myplugin_load_admin_scripts', 10, 1 );
 
 
 //////////////////////////////////////
-
-
-
 
 
 /*add_action( 'add_meta_boxes', 'yael_metabox' );  
